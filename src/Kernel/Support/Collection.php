@@ -21,6 +21,7 @@ use Serializable;
 
 /**
  * Class Collection.
+ * 相当一个 Bean 文件.
  */
 class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable, Serializable, Arrayable
 {
@@ -35,6 +36,20 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * set data.
      *
      * @param mixed $items
+     *
+     * @example $items  'app_id' => 'wx3cf0f39249eb0xxx',
+    'secret' => 'f1c242f4f28f735d4687abb469072xxx',
+
+    'response_type' => 'array',
+
+    'log' => [
+    'level' => 'debug',
+    'file' => __DIR__.'/wechat.log',
+    ],
+     'http' => [
+    'timeout' => 5.0,
+    'base_uri' => 'https://api.weixin.qq.com/',
+    ],
      */
     public function __construct(array $items = [])
     {

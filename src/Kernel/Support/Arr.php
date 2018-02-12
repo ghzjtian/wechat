@@ -416,6 +416,8 @@ class Arr
      * @param mixed  $value
      *
      * @return array
+     *
+     * @example string $key 'response_type' => 'array'
      */
     public static function set(array &$array, string $key, $value)
     {

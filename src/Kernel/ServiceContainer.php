@@ -68,11 +68,11 @@ class ServiceContainer extends Container
     {
         parent::__construct($prepends);
 
-        $this->registerConfig($config)
-            ->registerProviders()
-            ->registerLogger()
-            ->registerRequest()
-            ->registerHttpClient();
+        $this->registerConfig($config)//根据所给的配置信息,配置好 配置文件,$this['config']
+            ->registerProviders() //把服务提供者的服务全部注册
+            ->registerLogger()  //注册 monolog
+            ->registerRequest() //"symfony/http-foundation"
+            ->registerHttpClient(); //取得 GuzzleHttp ， 请求体 class.
 
         $this->id = md5(json_encode($config));
     }
@@ -191,7 +191,7 @@ class ServiceContainer extends Container
     /**
      * Magic get access.
      *
-     * @param string $id
+     * @param string $id    键名
      *
      * @return mixed
      */
@@ -203,8 +203,8 @@ class ServiceContainer extends Container
     /**
      * Magic set access.
      *
-     * @param string $id
-     * @param mixed  $value
+     * @param string $id    键名
+     * @param mixed  $value 属性值
      */
     public function __set($id, $value)
     {

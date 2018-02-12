@@ -28,6 +28,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
+        //如果还没设置 $app['encryptor'] 的值，就设置
         !isset($app['encryptor']) && $app['encryptor'] = function ($app) {
             return new Encryptor(
                 $app['config']['app_id'],
@@ -36,11 +37,14 @@ class ServiceProvider implements ServiceProviderInterface
             );
         };
 
+        //如果还没设置 $app['server'] 的值，就设置
         !isset($app['server']) && $app['server'] = function ($app) {
             $guard = new Guard($app);
             $guard->push(new EchoStrHandler($app));
 
             return $guard;
         };
+
+
     }
 }

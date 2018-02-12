@@ -40,13 +40,24 @@ class Factory
     /**
      * Dynamically pass methods to the application.
      *
-     * @param string $name
-     * @param array  $arguments
+     * @example Factory::officialAccount($config)   10  3
+     *
+     * @param string $name [方法名]
+     * @param array  $arguments [参数]
      *
      * @return mixed
      */
     public static function __callStatic($name, $arguments)
     {
         return self::make($name, ...$arguments);
+    }
+
+
+    /**
+     *
+     */
+    public function test(){
+
+
     }
 }

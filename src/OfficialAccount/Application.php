@@ -44,6 +44,8 @@ use EasyWeChat\Kernel\ServiceContainer;
 class Application extends ServiceContainer
 {
     /**
+     * 服务提供者
+     *
      * @var array
      */
     protected $providers = [

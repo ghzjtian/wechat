@@ -19,6 +19,7 @@ use EasyWeChat\Kernel\ServiceContainer;
 
 /**
  * Trait Observable.
+ * 觉察得到的特性
  *
  * @author overtrue <i@overtrue.me>
  */
@@ -37,13 +38,13 @@ trait Observable
      */
     public function push($handler, $condition = '*')
     {
-        list($handler, $condition) = $this->resolveHandlerAndCondition($handler, $condition);
+        list($handler, $condition) = $this->resolveHandlerAndCondition($handler, $condition);//返回了一个 $handler 闭包 和 $condition 结合的数组.
 
-        if (!isset($this->handlers[$condition])) {
+        if (!isset($this->handlers[$condition])) {//运行到这里，如果还没设置 条件 handlers[*].
             $this->handlers[$condition] = [];
         }
 
-        array_push($this->handlers[$condition], $handler);
+        array_push($this->handlers[$condition], $handler);//把 handler 压入 数组 handlers[*][] 中
     }
 
     /**
@@ -97,28 +98,30 @@ trait Observable
     }
 
     /**
-     * @param string|int $event
-     * @param mixed      ...$payload
+     * @param string|int $event,2
+     * @param mixed      ...$payload,null
      *
      * @return mixed|null
      */
     public function notify($event, $payload)
     {
         $result = null;
-
+        //handlers 的内容???
         foreach ($this->handlers as $condition => $handlers) {
             if ('*' === $condition || ($condition & $event) === $event) {
                 foreach ($handlers as $handler) {
-                    $response = $this->callHandler($handler, $payload);
+
+                    //返回一个 new FinallyResult($str)实例.
+                    $response = $this->callHandler($handler, $payload);//运行到这--> 调用初始化时，压入的 Handler 回调函数。
 
                     switch (true) {
                         case $response instanceof TerminateResult:
                             return $response->content;
                         case true === $response:
                             continue 2;
-                        case false === $response:
+                        case false === $response://run to this
                             break 2;
-                        case !empty($response) && !($result instanceof FinallyResult):
+                        case !empty($response) && !($result instanceof FinallyResult)://运行到这
                             $result = $response;
                     }
                 }
@@ -138,7 +141,7 @@ trait Observable
 
     /**
      * @param callable $handler
-     * @param mixed    $payload
+     * @param mixed    $payload , null
      *
      * @return mixed
      */
@@ -204,7 +207,7 @@ trait Observable
      */
     protected function resolveHandlerAndCondition($handler, $condition): array
     {
-        if (is_int($handler) || (is_string($handler) && !class_exists($handler))) {
+        if (is_int($handler) || (is_string($handler) && !class_exists($handler))) {//跳过
             list($handler, $condition) = [$condition, $handler];
         }
 

@@ -17,6 +17,7 @@ use EasyWeChat\Kernel\ServiceContainer;
 
 /**
  * Class EchoStrHandler.
+ * 输出字符串的 Handler
  *
  * @author overtrue <i@overtrue.me>
  */
@@ -42,9 +43,9 @@ class EchoStrHandler implements EventHandlerInterface
      *
      * @return FinallyResult|null
      */
-    public function handle($payload = null)
+    public function handle($payload = null)//运行到这!!
     {
-        if ($str = $this->app['request']->get('echostr')) {
+        if ($str = $this->app['request']->get('echostr')) {//取得微信认证发过来的 echostr 字符串
             return new FinallyResult($str);
         }
     }

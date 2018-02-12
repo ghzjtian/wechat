@@ -174,9 +174,9 @@ class Str
     /**
      * Convert a value to studly caps case.
      *
-     * @param string $value
+     * @param string $value ,example:officialAccount
      *
-     * @return string
+     * @return string   ,example:OfficialAccount
      */
     public static function studly($value)
     {

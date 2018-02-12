@@ -1,3 +1,35 @@
+## 1.Composer 包管理
+* 1.Composer 使用文档: https://docs.phpcomposer.com/04-schema.html#version
+* 2.Composer 的使用: https://www.jianshu.com/p/5954fe55d067
+
+
+## 2.Symfony框架<a name="symfony"/>
+>各种的组件框架.
+* https://github.com/symfony/symfony
+* https://www.jianshu.com/p/72553681b71c
+* 视频: http://www.imooc.com/learn/244
+* 中文文档: http://www.symfonychina.com/
+
+
+***
+
+## 3.silexphp/Pimple<a name="pimple"/>
+>容器框架.
+
+* https://github.com/silexphp/Pimple
+* https://www.jianshu.com/p/394a40485ca5
+* https://laravel-china.org/articles/4276/php-dependency-injection-container-pimple-notes
+
+
+
+
+
+***
+***
+***
+
+
+
 <p align="center">
 <a href="https://easywechat.org/">
     <img src="http://7u2jwa.com1.z0.glb.clouddn.com/logo-20171121.png" height="300" alt="EasyWeChat Logo"/>

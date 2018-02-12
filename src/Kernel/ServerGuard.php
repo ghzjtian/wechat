@@ -37,14 +37,15 @@ class ServerGuard
     use Observable, ResponseCastable;
 
     /**
+     * 是否需要经常验证的 flag ,默认为 false.
      * @var bool
      */
-    protected $alwaysValidate = false;
+    protected $alwaysValidate = true;
 
     /**
      * Empty string.
      */
-    const SUCCESS_EMPTY_RESPONSE = 'success';
+    const SUCCESS_EMPTY_RESPONSE = 'empty response,success';
 
     /**
      * @var array
@@ -86,7 +87,7 @@ class ServerGuard
 
     /**
      * Handle and return response.
-     *
+     *响应 服务器的验证消息.
      * @return Response
      *
      * @throws BadRequestException
@@ -95,6 +96,17 @@ class ServerGuard
      */
     public function serve(): Response
     {
+        //通过 monolog 输出一条信息。
+        /**
+         * 如:http://localhost/symfony_http/request.php/
+         *
+         * method:POST
+         * <br/>request Uri:http://localhost/symfony_http/request.php/
+         * <br/>method getContentType:json
+         * <br/>method getContent:{
+         * "name":"Tian"
+         * }
+         */
         $this->app['logger']->debug('Request received:', [
             'method' => $this->app['request']->getMethod(),
             'uri' => $this->app['request']->getUri(),
@@ -116,12 +128,25 @@ class ServerGuard
      */
     public function validate()
     {
+        //isSafeMode() return false.
         if (!$this->isSafeMode()) {
             return $this;
         }
+        //
+        /**
+         * signature: 微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
+         * timestamp    时间戳
+         *   nonce    随机数
+         */
+
+//        $validateStr = $this->signature([
+//            $this->getToken(),//token 是在哪里设置的 ？
+//            $this->app['request']->get('timestamp'),
+//            $this->app['request']->get('nonce'),
+//        ]);
 
         if ($this->app['request']->get('signature') !== $this->signature([
-                $this->getToken(),
+                $this->getToken(),//token 是在哪里设置的 ？
                 $this->app['request']->get('timestamp'),
                 $this->app['request']->get('nonce'),
             ])) {
@@ -142,7 +167,7 @@ class ServerGuard
      */
     public function getMessage()
     {
-        $message = $this->parseMessage($this->app['request']->getContent(false));
+        $message = $this->parseMessage($this->app['request']->getContent(false));//message = null
 
         if (!is_array($message) || empty($message)) {
             throw new BadRequestException('No message received.');
@@ -180,13 +205,13 @@ class ServerGuard
      */
     protected function resolve(): Response
     {
-        $result = $this->handleRequest();
+        $result = $this->handleRequest();//to = '' from = '' response = "sdfsdf"
 
-        if ($this->shouldReturnRawResponse()) {
-            return new Response($result['response']);
+        if ($this->shouldReturnRawResponse()) {//执行子类的 shouldReturnRawResponse 方法.
+            return new Response($result['response']);//如果验证服务器 有 echostr 参数并且不为 null ，会运行到这里
         }
 
-        return new Response(
+        return new Response(//否则
             $this->buildResponse($result['to'], $result['from'], $result['response']),
             200,
             ['Content-Type' => 'application/xml']
@@ -202,8 +227,8 @@ class ServerGuard
     }
 
     /**
-     * @param string                                                   $to
-     * @param string                                                   $from
+     * @param string $to
+     * @param string $from
      * @param \EasyWeChat\Kernel\Contracts\MessageInterface|string|int $message
      *
      * @return string
@@ -221,7 +246,7 @@ class ServerGuard
         }
 
         if (is_string($message) || is_numeric($message)) {
-            $message = new Text((string) $message);
+            $message = new Text((string)$message);
         }
 
         if (is_array($message) && reset($message) instanceof NewsItem) {
@@ -246,12 +271,22 @@ class ServerGuard
      */
     protected function handleRequest(): array
     {
-        $castedMessage = $this->getMessage();
 
-        $messageArray = $this->detectAndCastResponseToType($castedMessage, 'array');
+        $castedMessage = $this->getMessage();//castedMessage = null .
 
+        $messageArray = $this->detectAndCastResponseToType($castedMessage, 'array');//$messageArray = null
+//---->这一块不懂
+        //?? 的解析 , 三元运算表达式  https://www.qinziheng.com/php/4202.htm
+        /***
+         * c = a ?? b;
+        表示如果a非空，则c = a，
+        如果a为空，则 c = b；
+         */
+        // self::MESSAGE_TYPE_MAPPING[$messageArray['MsgType'] ?? $messageArray['msg_type'] ?? 'text'] = 2
+        // $response = $this->dispatch(2, $castedMessage);
+        //返回了 new FinallyResult 的 中的内容(echostr)
         $response = $this->dispatch(self::MESSAGE_TYPE_MAPPING[$messageArray['MsgType'] ?? $messageArray['msg_type'] ?? 'text'], $castedMessage);
-
+//---->
         return [
             'to' => $messageArray['FromUserName'] ?? '',
             'from' => $messageArray['ToUserName'] ?? '',
@@ -262,8 +297,8 @@ class ServerGuard
     /**
      * Build reply XML.
      *
-     * @param string                                        $to
-     * @param string                                        $from
+     * @param string $to
+     * @param string $from
      * @param \EasyWeChat\Kernel\Contracts\MessageInterface $message
      *
      * @return string
@@ -321,7 +356,7 @@ class ServerGuard
                 }
             }
 
-            return (array) $content;
+            return (array)$content;
         } catch (\Exception $e) {
             throw new BadRequestException(sprintf('Invalid message content:(%s) %s', $e->getCode(), $e->getMessage()), $e->getCode());
         }
@@ -334,9 +369,13 @@ class ServerGuard
      */
     protected function isSafeMode(): bool
     {
+
         if ($this->alwaysValidate) {
             return true;
         }
+
+        $encrypt_type = $this->app['request']->get('encrypt_type');
+        $signature = $this->app['request']->get('signature');
 
         return $this->app['request']->get('signature') && 'aes' === $this->app['request']->get('encrypt_type');
     }

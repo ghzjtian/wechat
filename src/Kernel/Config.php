@@ -15,6 +15,7 @@ use EasyWeChat\Kernel\Support\Collection;
 
 /**
  * Class Config.
+ * 相当于 Bean 文件.
  *
  * @author overtrue <i@overtrue.me>
  */

@@ -2,7 +2,7 @@
 
 >https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421135319
 
-##验证的步骤:
+## 验证的步骤:
 
 * 1. Factory 通过魔术方法 __callStatic ，调用 make 方法，取得   \EasyWeChat\OfficialAccount\Application 的对象实例.
 

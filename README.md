@@ -21,7 +21,8 @@
 * https://laravel-china.org/articles/4276/php-dependency-injection-container-pimple-notes
 
 
-
+## 4.代码解读:
+* 1.[checkSignature 的代码解读](https://github.com/ghzjtian/wechat/blob/master/checkSignature.md)
 
 
 ***

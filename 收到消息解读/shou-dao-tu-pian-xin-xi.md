@@ -1,0 +1,11 @@
+# 收到图片信息
+
+### 1.相关的 log
+
+```
+[2018-02-21 17:29:51] easywechat.officialaccount.application.DEBUG: Request received: {"method":"POST","uri":"http://tianwechat.free.ngrok.cc/server.php/?nonce=1833041013&openid=oxJ3K0usruknQwRJfNCAhqqGrKjY&signature=3cb99b2b4a121d237e6a466890b6a813f5e57a48&timestamp=1519205387","content-type":"xml","content":"<xml><ToUserName><![CDATA[gh_961af86169ad]]></ToUserName>\n<FromUserName><![CDATA[oxJ3K0usruknQwRJfNCAhqqGrKjY]]></FromUserName>\n<CreateTime>1519205386</CreateTime>\n<MsgType><![CDATA[image]]></MsgType>\n<PicUrl><![CDATA[http://mmbiz.qpic.cn/mmbiz_jpg/L3T47cibbnDNvLHQTmPsDpIYeAOK8Cd0cybJMPhoclibn8k67iayaibhXYQOeyAW23Pwg341dlH5tDgAlOy8kxOQaw/0]]></PicUrl>\n<MsgId>6524937449196734194</MsgId>\n<MediaId><![CDATA[XPAz4Afvym0yOKXUPvYuJws3qNJR6GzkcFE7-P5TJDJDEONZI1F5xRJ22Q_Tkx6M]]></MediaId>\n</xml>"} []
+[2018-02-21 17:29:51] easywechat.officialaccount.application.DEBUG: Server response created: {"content":"<xml><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[收到图片消息]]></Content><ToUserName><![CDATA[oxJ3K0usruknQwRJfNCAhqqGrKjY]]></ToUserName><FromUserName><![CDATA[gh_961af86169ad]]></FromUserName><CreateTime>1519205391</CreateTime></xml>"} []
+[2018-02-21 17:29:53] easywechat.officialaccount.application.DEBUG: Request received: {"method":"POST","uri":"http://tianwechat.free.ngrok.cc/server.php/?nonce=1833041013&openid=oxJ3K0usruknQwRJfNCAhqqGrKjY&signature=3cb99b2b4a121d237e6a466890b6a813f5e57a48&timestamp=1519205387","content-type":"xml","content":"<xml><ToUserName><![CDATA[gh_961af86169ad]]></ToUserName>\n<FromUserName><![CDATA[oxJ3K0usruknQwRJfNCAhqqGrKjY]]></FromUserName>\n<CreateTime>1519205386</CreateTime>\n<MsgType><![CDATA[image]]></MsgType>\n<PicUrl><![CDATA[http://mmbiz.qpic.cn/mmbiz_jpg/L3T47cibbnDNvLHQTmPsDpIYeAOK8Cd0cybJMPhoclibn8k67iayaibhXYQOeyAW23Pwg341dlH5tDgAlOy8kxOQaw/0]]></PicUrl>\n<MsgId>6524937449196734194</MsgId>\n<MediaId><![CDATA[XPAz4Afvym0yOKXUPvYuJws3qNJR6GzkcFE7-P5TJDJDEONZI1F5xRJ22Q_Tkx6M]]></MediaId>\n</xml>"} []
+[2018-02-21 17:29:53] easywechat.officialaccount.application.DEBUG: Server response created: {"content":"<xml><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[收到图片消息]]></Content><ToUserName><![CDATA[oxJ3K0usruknQwRJfNCAhqqGrKjY]]></ToUserName><FromUserName><![CDATA[gh_961af86169ad]]></FromUserName><CreateTime>1519205393</CreateTime></xml>"} []
+
+```

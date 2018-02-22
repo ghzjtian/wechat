@@ -40,12 +40,16 @@ class ServerGuard
      * 是否需要经常验证的 flag ,默认为 false.
      * @var bool
      */
-    protected $alwaysValidate = true;
+    protected $alwaysValidate = false;
 
     /**
+     * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140543
+     * 被动回复用户消息,
+     * 假如服务器无法保证在五秒内处理并回复，必须做出下述回复，这样微信服务器才不会对此作任何处理，并且不会发起重试（这种情况下，可以使用客服消息接口进行异步回复），否则，将出现严重的错误提示。详见下面说明：
+    1、直接回复success（推荐方式） 2、直接回复空串（指字节长度为0的空字符串，而不是XML结构体中content字段的内容为空）
      * Empty string.
      */
-    const SUCCESS_EMPTY_RESPONSE = 'empty response,success';
+    const SUCCESS_EMPTY_RESPONSE = 'success';
 
     /**
      * @var array
@@ -146,7 +150,7 @@ class ServerGuard
 //        ]);
 
         if ($this->app['request']->get('signature') !== $this->signature([
-                $this->getToken(),//token 是在哪里设置的 ？
+                $this->getToken(),
                 $this->app['request']->get('timestamp'),
                 $this->app['request']->get('nonce'),
             ])) {
@@ -190,6 +194,8 @@ class ServerGuard
 
             $message = XML::parse($message);
         }
+
+        $response_type = $this->app->config->get('response_type');
 
         return $this->detectAndCastResponseToType($message, $this->app->config->get('response_type'));
     }
@@ -271,11 +277,11 @@ class ServerGuard
      */
     protected function handleRequest(): array
     {
-
+        //取得 content 的内容，并把内容转为 相应的格式 server.php ->  'response_type' => 'array', .
         $castedMessage = $this->getMessage();//castedMessage = null .
 
         $messageArray = $this->detectAndCastResponseToType($castedMessage, 'array');//$messageArray = null
-//---->这一块不懂
+//---->
         //?? 的解析 , 三元运算表达式  https://www.qinziheng.com/php/4202.htm
         /***
          * c = a ?? b;
@@ -284,6 +290,7 @@ class ServerGuard
          */
         // self::MESSAGE_TYPE_MAPPING[$messageArray['MsgType'] ?? $messageArray['msg_type'] ?? 'text'] = 2
         // $response = $this->dispatch(2, $castedMessage);
+
         //返回了 new FinallyResult 的 中的内容(echostr)
         $response = $this->dispatch(self::MESSAGE_TYPE_MAPPING[$messageArray['MsgType'] ?? $messageArray['msg_type'] ?? 'text'], $castedMessage);
 //---->

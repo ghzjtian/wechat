@@ -31,6 +31,9 @@ trait Observable
     protected $handlers = [];
 
     /**
+     *
+     * 推入一个回调函数
+     *
      * @param \Closure|EventHandlerInterface|string $handler
      * @param \Closure|EventHandlerInterface|string $condition
      *
@@ -43,7 +46,7 @@ trait Observable
         if (!isset($this->handlers[$condition])) {//运行到这里，如果还没设置 条件 handlers[*].
             $this->handlers[$condition] = [];
         }
-
+//二维数组
         array_push($this->handlers[$condition], $handler);//把 handler 压入 数组 handlers[*][] 中
     }
 
@@ -106,12 +109,12 @@ trait Observable
     public function notify($event, $payload)
     {
         $result = null;
-        //handlers 的内容???
+        //二维数组 handlers[][]
         foreach ($this->handlers as $condition => $handlers) {
             if ('*' === $condition || ($condition & $event) === $event) {
                 foreach ($handlers as $handler) {
 
-                    //返回一个 new FinallyResult($str)实例.
+                    //返回一个 callback 后的结果.
                     $response = $this->callHandler($handler, $payload);//运行到这--> 调用初始化时，压入的 Handler 回调函数。
 
                     switch (true) {
@@ -119,9 +122,9 @@ trait Observable
                             return $response->content;
                         case true === $response:
                             continue 2;
-                        case false === $response://run to this
+                        case false === $response:
                             break 2;
-                        case !empty($response) && !($result instanceof FinallyResult)://运行到这
+                        case !empty($response) && !($result instanceof FinallyResult): //如果要响应的值为 FinallyResult类型的(暂时发现是服务器验证类型的)，就跳过.
                             $result = $response;
                     }
                 }
@@ -207,7 +210,7 @@ trait Observable
      */
     protected function resolveHandlerAndCondition($handler, $condition): array
     {
-        if (is_int($handler) || (is_string($handler) && !class_exists($handler))) {//跳过
+        if (is_int($handler) || (is_string($handler) && !class_exists($handler))) {//如果是 int string 或那个 方法是存在的
             list($handler, $condition) = [$condition, $handler];
         }
 

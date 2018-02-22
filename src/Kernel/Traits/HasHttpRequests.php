@@ -110,7 +110,7 @@ trait HasHttpRequests
         if (!is_null($name)) {
             $this->middlewares[$name] = $middleware;
         } else {
-            array_push($this->middlewares, $middleware);
+            array_push($this->middlewares, $middleware);//把 $middleware 压入 middlewares 数组.
         }
 
         return $this;

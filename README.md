@@ -25,6 +25,16 @@
 * 1.[checkSignature 的代码解读](https://github.com/ghzjtian/wechat/blob/master/checkSignature.md)
 
 
+## 5.Guzzle 框架:
+>发送请求框架.
+* 1.[ Guzzle中文文档](http://guzzle-cn.readthedocs.io/zh_CN/latest/overview.html#id1)
+* 2.GitHub 主页: https://github.com/guzzle/guzzle
+* 3.PHP中使用Guzzle进行API测试: https://www.jianshu.com/p/3de203392ec4
+* 4.使用文档:http://docs.guzzlephp.org/en/stable/request-options.html
+
+
+
+
 ***
 ***
 ***

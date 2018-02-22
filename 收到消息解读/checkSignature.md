@@ -62,8 +62,8 @@ $config = [
 		* 4.在 ```resolve()``` 中，我们将通过回调函数，调用 ```ServiceProvider -> register ``` 中 ```New Guard```实例  的 ```EchoStrHandler.handle``` 方法.得到 微信服务器发过来的 ```echostr``` 的值.
 		* 5.然后再返回一个 ```Symfony\Component\HttpFoundation\Response``` 的值去相应输出操作.
 
-
-
+* 4.验证服务器
+    * 用 Sunny-Ngrok   官 网 www.ngrok.cc 做内网的映射，去做 debug 服务器.
 
 
 

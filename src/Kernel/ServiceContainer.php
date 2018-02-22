@@ -182,7 +182,7 @@ class ServiceContainer extends Container
     protected function registerHttpClient()
     {
         isset($this['http_client']) || $this['http_client'] = function ($app) {
-            return new Client($app['config']->get('http', []));
+            return new Client($app['config']->get('http', []));//根据配置文件，去初始化一个 Client
         };
 
         return $this;

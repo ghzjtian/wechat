@@ -53,11 +53,11 @@ class Application extends ServiceContainer
         Server\ServiceProvider::class,
         User\ServiceProvider::class,
         OAuth\ServiceProvider::class,
-        Menu\ServiceProvider::class,
+        Menu\ServiceProvider::class, //菜单
         TemplateMessage\ServiceProvider::class,
         Material\ServiceProvider::class,
         CustomerService\ServiceProvider::class,
-        Semantic\ServiceProvider::class,
+        Semantic\ServiceProvider::class,// 语义的；语义学的
         DataCube\ServiceProvider::class,
         POI\ServiceProvider::class,
         AutoReply\ServiceProvider::class,

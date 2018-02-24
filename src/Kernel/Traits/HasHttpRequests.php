@@ -129,9 +129,9 @@ trait HasHttpRequests
     /**
      * Make a request.
      *
-     * @param string $url
-     * @param string $method
-     * @param array  $options
+     * @param string $url   ps: protected $endpointToGetToken = 'https://api.weixin.qq.com/cgi-bin/token';
+     * @param string $method    ps:GET
+     * @param array  $options   ps:query
      *
      * @return \Psr\Http\Message\ResponseInterface|\EasyWeChat\Kernel\Support\Collection|array|object|string
      */
@@ -139,6 +139,7 @@ trait HasHttpRequests
     {
         $method = strtoupper($method);
 
+        //113 => 1 ,query => { ...credential } , handler => ...
         $options = array_merge(self::$defaults, $options, ['handler' => $this->getHandlerStack()]);
 
         $options = $this->fixJsonIssue($options);
@@ -147,6 +148,7 @@ trait HasHttpRequests
             $options['base_uri'] = $this->baseUri;
         }
 
+        //网络请求: https://guzzle-cn.readthedocs.io/zh_CN/latest/
         $response = $this->getHttpClient()->request($method, $url, $options);
         $response->getBody()->rewind();
 

@@ -68,12 +68,15 @@ class Response extends GuzzleResponse
      */
     public function toArray()
     {
+
+        //如果是 xml 类型的返回
         $content = $this->getBodyContents();
 
         if (false !== stripos($this->getHeaderLine('Content-Type'), 'xml') || 0 === stripos($content, '<xml')) {
             return XML::parse($content);
         }
 
+        //如果是 json 类型的返回.
         $array = json_decode($this->getBodyContents(), true);
 
         if (JSON_ERROR_NONE === json_last_error()) {

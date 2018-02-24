@@ -107,12 +107,15 @@ abstract class AccessToken implements AccessTokenInterface
         $cacheKey = $this->getCacheKey();
         $cache = $this->getCache();
 
+        //如果不是强制要刷新 & cache 里面有 值，就取出来.
         if (!$refresh && $cache->has($cacheKey)) {
             return $cache->get($cacheKey);
         }
 
+        //array: {"access_token":"ACCESS_TOKEN","expires_in":7200}
         $token = $this->requestToken($this->getCredentials(), true);
 
+        //保存 token 到缓存.
         $this->setToken($token[$this->tokenKey], $token['expires_in'] ?? 7200);
 
         return $token;
@@ -152,7 +155,7 @@ abstract class AccessToken implements AccessTokenInterface
     }
 
     /**
-     * @param array $credentials
+     * @param array $credentials    获取 AccessToken 所需要的一切材料(grant_type=client_credential&appid=APPID&secret=APPSECRET)
      * @param bool  $toArray
      *
      * @return \Psr\Http\Message\ResponseInterface|\EasyWeChat\Kernel\Support\Collection|array|object|string
@@ -163,8 +166,11 @@ abstract class AccessToken implements AccessTokenInterface
      */
     public function requestToken(array $credentials, $toArray = false)
     {
-        $response = $this->sendRequest($credentials);
+        $response = $this->sendRequest($credentials);//得到返回的响应值.
+
         $result = json_decode($response->getBody()->getContents(), true);
+
+        //response_type -> array.返回对 response 解析为 指定类型的结果.
         $formatted = $this->castResponseToType($response, $this->app['config']->get('response_type'));
 
         if (empty($result[$this->tokenKey])) {
@@ -187,9 +193,9 @@ abstract class AccessToken implements AccessTokenInterface
      */
     public function applyToRequest(RequestInterface $request, array $requestOptions = []): RequestInterface
     {
-        parse_str($request->getUri()->getQuery(), $query);
+        parse_str($request->getUri()->getQuery(), $query);//得到请求中的参数.
 
-        $query = http_build_query(array_merge($this->getQuery(), $query));
+        $query = http_build_query(array_merge($this->getQuery(), $query));//把网络请求的参数拼接到 URL 中
 
         return $request->withUri($request->getUri()->withQuery($query));
     }
@@ -217,6 +223,7 @@ abstract class AccessToken implements AccessTokenInterface
      */
     protected function getCacheKey()
     {
+        //easywechat.kernel.access_token.ABCDEFG......
         return $this->cachePrefix.md5(json_encode($this->getCredentials()));
     }
 

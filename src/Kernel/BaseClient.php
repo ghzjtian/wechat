@@ -156,7 +156,7 @@ class BaseClient
     /**
      * @param string $url
      * @param string $method
-     * @param array  $options
+     * @param array  $options   ['query' => $query]
      * @param bool   $returnRaw
      *
      * @return \Psr\Http\Message\ResponseInterface|\EasyWeChat\Kernel\Support\Collection|array|object|string
@@ -219,13 +219,14 @@ class BaseClient
      * Attache access token to request query.
      *
      * @return \Closure
+     * ???
      */
     protected function accessTokenMiddleware()
     {
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
                 if ($this->accessToken) {
-                    $request = $this->accessToken->applyToRequest($request, $options);
+                    $request = $this->accessToken->applyToRequest($request, $options);//得到 request 对象.
                 }
 
                 return $handler($request, $options);
@@ -262,7 +263,13 @@ class BaseClient
                 // Retry on server errors
                 $response = json_decode($body, true);
 
+                //40001,40002 解读 : https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433747234
                 if (!empty($response['errcode']) && in_array(abs($response['errcode']), [40001, 42001], true)) {
+                    //如果遇到了下面的问题:
+                    //40001	获取 access_token 时 AppSecret 错误，或者 access_token 无效。请开发者认真比对 AppSecret 的正确性，或查看是否正在为恰当的公众号调用接口
+//                    40002	不合法的凭证类型
+                    //就刷新 accessToken ，记录下 log ,然后再次提交 request 获取信息.
+                    //
                     $this->accessToken->refresh();
                     $this->app['logger']->debug('Retrying with refreshed access token.');
 

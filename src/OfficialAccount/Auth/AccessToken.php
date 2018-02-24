@@ -26,6 +26,7 @@ class AccessToken extends BaseAccessToken
     protected $endpointToGetToken = 'https://api.weixin.qq.com/cgi-bin/token';
 
     /**
+     * 放回获取 AccessToken 所需要的一切材料.
      * @return array
      */
     protected function getCredentials(): array

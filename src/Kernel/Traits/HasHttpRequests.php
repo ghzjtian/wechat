@@ -139,7 +139,7 @@ trait HasHttpRequests
     {
         $method = strtoupper($method);
 
-        //113 => 1 ,query => { ...credential } , handler => ...
+        //113 => 1 , ...
         $options = array_merge(self::$defaults, $options, ['handler' => $this->getHandlerStack()]);
 
         $options = $this->fixJsonIssue($options);
@@ -149,9 +149,11 @@ trait HasHttpRequests
         }
 
         //网络请求: https://guzzle-cn.readthedocs.io/zh_CN/latest/
+        //$options['base_uri'] 可以为 $url 参数添加前缀.
         $response = $this->getHttpClient()->request($method, $url, $options);
         $response->getBody()->rewind();
-
+//        $content=$response->getBody()->getContent();
+//        $content=$response->getBody()->getContent();
         return $response;
     }
 

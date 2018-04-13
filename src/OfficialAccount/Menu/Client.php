@@ -51,13 +51,18 @@ class Client extends BaseClient
     public function create(array $buttons, array $matchRule = [])
     {
         if (!empty($matchRule)) {
+            //个性化菜单.
             return $this->httpPostJson('cgi-bin/menu/addconditional', [
                 'button' => $buttons,
                 'matchrule' => $matchRule,
             ]);
         }
 
-        return $this->httpPostJson('cgi-bin/menu/create', ['button' => $buttons]);
+        //普通菜单: https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013
+        $myMenuResponse = $this->httpPostJson('cgi-bin/menu/create', ['button' => $buttons]);
+
+
+        return $myMenuResponse;
     }
 
     /**

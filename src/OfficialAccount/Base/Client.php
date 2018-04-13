@@ -41,6 +41,7 @@ class Client extends BaseClient
      */
     public function getValidIps()
     {
-        return $this->httpGet('getValidIps');
+//        return $this->httpGet('getValidIps');
+        return $this->httpGet('cgi-bin/getcallbackip');
     }
 }

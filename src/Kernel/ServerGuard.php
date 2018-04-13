@@ -291,7 +291,8 @@ class ServerGuard
         // self::MESSAGE_TYPE_MAPPING[$messageArray['MsgType'] ?? $messageArray['msg_type'] ?? 'text'] = 2
         // $response = $this->dispatch(2, $castedMessage);
 
-        //返回了 new FinallyResult 的 中的内容(echostr)
+        //返回了 new FinallyResult  中的内容(echostr)
+        //返回了 回调函数中的内容.
         $response = $this->dispatch(self::MESSAGE_TYPE_MAPPING[$messageArray['MsgType'] ?? $messageArray['msg_type'] ?? 'text'], $castedMessage);
 //---->
         return [

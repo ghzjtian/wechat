@@ -226,7 +226,7 @@ class BaseClient
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
                 if ($this->accessToken) {
-                    $request = $this->accessToken->applyToRequest($request, $options);//得到 request 对象.
+                    $request = $this->accessToken->applyToRequest($request, $options);//得到原 url 与 token 拼接后的 request 对象.
                 }
 
                 return $handler($request, $options);

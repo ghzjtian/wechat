@@ -28,6 +28,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['oauth'] = function ($app) {
+            //$socialite 为 WeChatProvider 对象.
             $socialite = (new Socialite([
                 'wechat' => [
                     'client_id' => $app['config']['app_id'],
@@ -35,8 +36,11 @@ class ServiceProvider implements ServiceProviderInterface
                     'redirect' => $this->prepareCallbackUrl($app),
                 ],
             ], $app['request']))->driver('wechat');
+            // //Overtrue\Socialite\Providers\WeChatProvider
 
-            $scopes = (array) $app['config']->get('oauth.scopes', ['snsapi_userinfo']);
+
+
+            $scopes = (array)$app['config']->get('oauth.scopes', ['snsapi_userinfo']);
 
             if (!empty($scopes)) {
                 $socialite->scopes($scopes);
@@ -48,6 +52,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Prepare the OAuth callback url for wechat.
+     * 取得 callback 的重定向的 url
      *
      * @param Container $app
      *
@@ -60,7 +65,11 @@ class ServiceProvider implements ServiceProviderInterface
             return $callback;
         }
         $baseUrl = $app['request']->getSchemeAndHttpHost();
+        //取得请求的 scheme and host,如原本为: http://localhost:63342/testPHP/symfony_http/request.php?_ijt=7h58iu5jm3g7eb66mjod9mf84d
+        // 则转化后为 http://localhost:63342
 
-        return $baseUrl.'/'.ltrim($callback, '/');
+        return $baseUrl . '/' . ltrim($callback, '/');
+        //$callback = '/oauth_callback';
+        //ltrim($callback,'/');   is return  'oauth_callback'
     }
 }

@@ -101,6 +101,7 @@ class Client extends BaseClient
      */
     protected function create($actionName, $actionInfo, $temporary = true, $expireSeconds = null)
     {
+        //默认为 7 天.
         null !== $expireSeconds || $expireSeconds = 7 * self::DAY;
 
         $params = [
@@ -109,6 +110,7 @@ class Client extends BaseClient
         ];
 
         if ($temporary) {
+            //最多为 30 天
             $params['expire_seconds'] = min($expireSeconds, 30 * self::DAY);
         }
 

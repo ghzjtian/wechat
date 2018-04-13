@@ -93,6 +93,8 @@ abstract class AccessToken implements AccessTokenInterface
     }
 
     /**
+     *
+     * 取得 Token
      * @param bool $refresh
      *
      * @return array
@@ -193,9 +195,9 @@ abstract class AccessToken implements AccessTokenInterface
      */
     public function applyToRequest(RequestInterface $request, array $requestOptions = []): RequestInterface
     {
-        parse_str($request->getUri()->getQuery(), $query);//得到请求中的参数.
+        parse_str($request->getUri()->getQuery(), $query);//得到请求中的参数,并把参数存进 $query 中.
 
-        $query = http_build_query(array_merge($this->getQuery(), $query));//把网络请求的参数拼接到 URL 中
+        $query = http_build_query(array_merge($this->getQuery(), $query));//把网络请求的参数拼接到 URL 中,生成 URL-encode 之后的请求字符串
 
         return $request->withUri($request->getUri()->withQuery($query));
     }
@@ -229,7 +231,7 @@ abstract class AccessToken implements AccessTokenInterface
 
     /**
      * The request query will be used to add to the request.
-     *
+     *取得 Token 的值.
      * @return array
      *
      * @throws \EasyWeChat\Kernel\Exceptions\HttpException

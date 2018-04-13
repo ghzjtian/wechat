@@ -69,10 +69,10 @@ class ServiceContainer extends Container
         parent::__construct($prepends);
 
         $this->registerConfig($config)//根据所给的配置信息,配置好 配置文件,$this['config']
-            ->registerProviders() //把服务提供者的服务全部注册
+            ->registerProviders() //把服务提供者的服务全部注册,然后就可以直接调用
             ->registerLogger()  //注册 monolog
-            ->registerRequest() //"symfony/http-foundation"
-            ->registerHttpClient(); //取得 GuzzleHttp ， 请求体 class.
+            ->registerRequest() //"symfony/http-foundation",取得请求的各个参数的内容.
+            ->registerHttpClient(); //取得 GuzzleHttp ， 请求体 class.发起请求的类.
 
         $this->id = md5(json_encode($config));
     }
